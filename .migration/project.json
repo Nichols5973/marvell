@@ -3,9 +3,9 @@
   "sites": {
     "marvell": {
       "libraryUrl": "https://main--sta-xwalk-boilerplate--aemysites.aem.page/tools/sidekick/library.json",
-      "previewOrg": "Nichols5973",
+      "previewOrg": "nichols5973",
       "previewSite": "marvell",
-      "contentHostUrl": "author-p153659-e1620914.adobeaemcloud.com"
+      "contentHostUrl": "author-p87302-e1492027.adobeaemcloud.com"
     }
   }
 }
