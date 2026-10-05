@@ -8,6 +8,6 @@
   ],
   "includes": [
     "/content/marvell/",
-    "/content/dam/amarvell/"
+    "/content/dam/marvell/"
   ]
 }
