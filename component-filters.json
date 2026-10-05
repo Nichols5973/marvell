@@ -36,7 +36,13 @@
       "forex",
       "embed-adaptive-form",
       "find-a-doctor",
-      "fragment-list"
+      "fragment-list",
+      "hero-dark",
+      "carousel-teaser",
+      "tabs-distance",
+      "tabs-portfolio",
+      "cards-stats",
+      "tabs-news"
     ]
   },
   {
@@ -109,6 +115,36 @@
       "tnc",
       "wizard",
       "range"
+    ]
+  },
+  {
+    "id": "carousel-teaser",
+    "components": [
+      "carousel-teaser-slide"
+    ]
+  },
+  {
+    "id": "tabs-distance",
+    "components": [
+      "tabs-distance-item"
+    ]
+  },
+  {
+    "id": "tabs-portfolio",
+    "components": [
+      "tabs-portfolio-item"
+    ]
+  },
+  {
+    "id": "cards-stats",
+    "components": [
+      "cards-stats-card"
+    ]
+  },
+  {
+    "id": "tabs-news",
+    "components": [
+      "tabs-news-item"
     ]
   }
 ]

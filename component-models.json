@@ -26,41 +26,40 @@
         "description": "Select the Brand Theme Content Fragment. Only applies when Theme in the dropdown below is set to default",
         "valueType": "string",
         "validation": {
-            "rootPath": "/content/dam"
+          "rootPath": "/content/dam"
         }
       },
       {
-          "component": "select",
-          "name": "theme",
-          "label": "Theme",
-          "description": "This takes priority over CF based theme except when default is selected.",
-
-          "options": [
-            {
-              "name": "default",
-              "value": ""
-            },
-            {
-              "name": "Gray Theme",
-              "value": "gray-theme"
-            },
-            {
-              "name": "Red Theme",
-              "value": "red-theme"
-            },
-            {
-              "name": "Blue Theme",
-              "value": "blue-theme"
-            },
-             {
-              "name": "Green Theme",
-              "value": "green-theme"
-            },
-            {
-              "name": "WeHealthcare Theme",
-              "value": "wehealthcare-theme"
-            }
-          ]
+        "component": "select",
+        "name": "theme",
+        "label": "Theme",
+        "description": "This takes priority over CF based theme except when default is selected.",
+        "options": [
+          {
+            "name": "default",
+            "value": ""
+          },
+          {
+            "name": "Gray Theme",
+            "value": "gray-theme"
+          },
+          {
+            "name": "Red Theme",
+            "value": "red-theme"
+          },
+          {
+            "name": "Blue Theme",
+            "value": "blue-theme"
+          },
+          {
+            "name": "Green Theme",
+            "value": "green-theme"
+          },
+          {
+            "name": "WeHealthcare Theme",
+            "value": "wehealthcare-theme"
+          }
+        ]
       },
       {
         "component": "text",
@@ -343,7 +342,7 @@
           {
             "name": "Light Color",
             "value": "bg-light"
-          }         
+          }
         ]
       },
       {
@@ -411,7 +410,7 @@
         "name": "ctastyle",
         "label": "CTA Style",
         "options": [
-         {
+          {
             "name": "Link",
             "value": "cta-link"
           },
@@ -700,7 +699,7 @@
         "label": "Link",
         "multi": false,
         "validation": {
-            "rootPath": "/content"
+          "rootPath": "/content"
         }
       },
       {
@@ -751,9 +750,18 @@
         "label": "Alignment",
         "value": "",
         "options": [
-          { "name": "Left (default)", "value": "" },
-          { "name": "Center", "value": "btn-align-center" },
-          { "name": "Right", "value": "btn-align-right" }
+          {
+            "name": "Left (default)",
+            "value": ""
+          },
+          {
+            "name": "Center",
+            "value": "btn-align-center"
+          },
+          {
+            "name": "Right",
+            "value": "btn-align-right"
+          }
         ]
       },
       {
@@ -784,7 +792,14 @@
         "value": "",
         "valueType": "string",
         "description": "Persisted variation for publish; leave empty for master.",
-        "condition": { "==": [ { "var": "__alwaysFalse" }, true ] }
+        "condition": {
+          "==": [
+            {
+              "var": "__alwaysFalse"
+            },
+            true
+          ]
+        }
       },
       {
         "component": "select",
@@ -837,7 +852,7 @@
         "name": "ctastyle",
         "label": "CTA Style",
         "options": [
-         {
+          {
             "name": "Link",
             "value": "cta-link"
           },
@@ -876,18 +891,40 @@
         "value": "",
         "valueType": "string",
         "description": "Persisted variation for publish; leave empty for master.",
-        "condition": { "==": [ { "var": "__alwaysFalse" }, true ] }
+        "condition": {
+          "==": [
+            {
+              "var": "__alwaysFalse"
+            },
+            true
+          ]
+        }
       },
       {
         "component": "select",
         "name": "displaystyle",
         "label": "Display Style",
         "options": [
-          { "name": "Default (card)", "value": "" },
-          { "name": "Image Left", "value": "image-left" },
-          { "name": "Image Right", "value": "image-right" },
-          { "name": "Image Top", "value": "image-top" },
-          { "name": "Image Bottom", "value": "image-bottom" }
+          {
+            "name": "Default (card)",
+            "value": ""
+          },
+          {
+            "name": "Image Left",
+            "value": "image-left"
+          },
+          {
+            "name": "Image Right",
+            "value": "image-right"
+          },
+          {
+            "name": "Image Top",
+            "value": "image-top"
+          },
+          {
+            "name": "Image Bottom",
+            "value": "image-bottom"
+          }
         ]
       },
       {
@@ -895,9 +932,18 @@
         "name": "alignment",
         "label": "Text Alignment",
         "options": [
-          { "name": "Center", "value": "text-center" },
-          { "name": "Left", "value": "text-left" },
-          { "name": "Right", "value": "text-right" }
+          {
+            "name": "Center",
+            "value": "text-center"
+          },
+          {
+            "name": "Left",
+            "value": "text-left"
+          },
+          {
+            "name": "Right",
+            "value": "text-right"
+          }
         ]
       },
       {
@@ -928,12 +974,30 @@
         "label": "Heading Level",
         "value": "h2",
         "options": [
-          { "name": "H1", "value": "h1" },
-          { "name": "H2", "value": "h2" },
-          { "name": "H3", "value": "h3" },
-          { "name": "H4", "value": "h4" },
-          { "name": "H5", "value": "h5" },
-          { "name": "H6", "value": "h6" }
+          {
+            "name": "H1",
+            "value": "h1"
+          },
+          {
+            "name": "H2",
+            "value": "h2"
+          },
+          {
+            "name": "H3",
+            "value": "h3"
+          },
+          {
+            "name": "H4",
+            "value": "h4"
+          },
+          {
+            "name": "H5",
+            "value": "h5"
+          },
+          {
+            "name": "H6",
+            "value": "h6"
+          }
         ]
       },
       {
@@ -943,10 +1007,22 @@
         "label": "Text Alignment",
         "value": "",
         "options": [
-          { "name": "Default", "value": "" },
-          { "name": "Left", "value": "align-left" },
-          { "name": "Center", "value": "align-center" },
-          { "name": "Right", "value": "align-right" }
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Left",
+            "value": "align-left"
+          },
+          {
+            "name": "Center",
+            "value": "align-center"
+          },
+          {
+            "name": "Right",
+            "value": "align-right"
+          }
         ]
       },
       {
@@ -956,11 +1032,26 @@
         "label": "Color",
         "value": "",
         "options": [
-          { "name": "Default", "value": "" },
-          { "name": "Primary", "value": "color-primary" },
-          { "name": "Light / On dark", "value": "color-light" },
-          { "name": "Dark", "value": "color-dark" },
-          { "name": "Muted", "value": "color-muted" }
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Primary",
+            "value": "color-primary"
+          },
+          {
+            "name": "Light / On dark",
+            "value": "color-light"
+          },
+          {
+            "name": "Dark",
+            "value": "color-dark"
+          },
+          {
+            "name": "Muted",
+            "value": "color-muted"
+          }
         ]
       },
       {
@@ -970,12 +1061,30 @@
         "label": "Padding Top",
         "value": "",
         "options": [
-          { "name": "Default", "value": "" },
-          { "name": "None", "value": "pt-none" },
-          { "name": "Small", "value": "pt-small" },
-          { "name": "Medium", "value": "pt-medium" },
-          { "name": "Large", "value": "pt-large" },
-          { "name": "XLarge", "value": "pt-xlarge" }
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "None",
+            "value": "pt-none"
+          },
+          {
+            "name": "Small",
+            "value": "pt-small"
+          },
+          {
+            "name": "Medium",
+            "value": "pt-medium"
+          },
+          {
+            "name": "Large",
+            "value": "pt-large"
+          },
+          {
+            "name": "XLarge",
+            "value": "pt-xlarge"
+          }
         ]
       },
       {
@@ -985,12 +1094,30 @@
         "label": "Padding Bottom",
         "value": "",
         "options": [
-          { "name": "Default", "value": "" },
-          { "name": "None", "value": "pb-none" },
-          { "name": "Small", "value": "pb-small" },
-          { "name": "Medium", "value": "pb-medium" },
-          { "name": "Large", "value": "pb-large" },
-          { "name": "XLarge", "value": "pb-xlarge" }
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "None",
+            "value": "pb-none"
+          },
+          {
+            "name": "Small",
+            "value": "pb-small"
+          },
+          {
+            "name": "Medium",
+            "value": "pb-medium"
+          },
+          {
+            "name": "Large",
+            "value": "pb-large"
+          },
+          {
+            "name": "XLarge",
+            "value": "pb-xlarge"
+          }
         ]
       },
       {
@@ -1039,14 +1166,38 @@
         "description": "MIME type prefixes or extensions to include (e.g. application/pdf, pdf, doc, xls). Leave empty to include all.",
         "value": "",
         "options": [
-          { "name": "PDF", "value": "pdf" },
-          { "name": "Word (.doc/.docx)", "value": "doc" },
-          { "name": "Excel (.xls/.xlsx)", "value": "xls" },
-          { "name": "PowerPoint (.ppt/.pptx)", "value": "ppt" },
-          { "name": "Images", "value": "image" },
-          { "name": "Video", "value": "video" },
-          { "name": "Audio", "value": "audio" },
-          { "name": "Archive (.zip)", "value": "zip" }
+          {
+            "name": "PDF",
+            "value": "pdf"
+          },
+          {
+            "name": "Word (.doc/.docx)",
+            "value": "doc"
+          },
+          {
+            "name": "Excel (.xls/.xlsx)",
+            "value": "xls"
+          },
+          {
+            "name": "PowerPoint (.ppt/.pptx)",
+            "value": "ppt"
+          },
+          {
+            "name": "Images",
+            "value": "image"
+          },
+          {
+            "name": "Video",
+            "value": "video"
+          },
+          {
+            "name": "Audio",
+            "value": "audio"
+          },
+          {
+            "name": "Archive (.zip)",
+            "value": "zip"
+          }
         ]
       },
       {
@@ -1056,12 +1207,30 @@
         "label": "Sort By",
         "value": "name",
         "options": [
-          { "name": "Name (A→Z)", "value": "name" },
-          { "name": "Name (Z→A)", "value": "name-desc" },
-          { "name": "Newest first", "value": "modified-desc" },
-          { "name": "Oldest first", "value": "modified" },
-          { "name": "Largest first", "value": "size-desc" },
-          { "name": "Smallest first", "value": "size" }
+          {
+            "name": "Name (A→Z)",
+            "value": "name"
+          },
+          {
+            "name": "Name (Z→A)",
+            "value": "name-desc"
+          },
+          {
+            "name": "Newest first",
+            "value": "modified-desc"
+          },
+          {
+            "name": "Oldest first",
+            "value": "modified"
+          },
+          {
+            "name": "Largest first",
+            "value": "size-desc"
+          },
+          {
+            "name": "Smallest first",
+            "value": "size"
+          }
         ]
       },
       {
@@ -1122,12 +1291,12 @@
         "valueType": "string"
       },
       {
-            "component": "boolean",
-            "label": "Enable Underline in Title",
-            "description": "Enable underline for H1 elements in your text",
-            "name": "enableunderline",
-            "value": "true",
-            "valueType": "boolean"
+        "component": "boolean",
+        "label": "Enable Underline in Title",
+        "description": "Enable underline for H1 elements in your text",
+        "name": "enableunderline",
+        "value": "true",
+        "valueType": "boolean"
       },
       {
         "component": "select",
@@ -1156,7 +1325,6 @@
           }
         ]
       },
-      
       {
         "component": "select",
         "name": "backgroundstyle",
@@ -1225,232 +1393,239 @@
     ]
   },
   {
-      "id": "dynamic-media-image",
-      "fields": [
-        {
-            "component": "custom-asset-namespace:custom-asset",
-            "name": "image",
-            "label": "Image",
-            "required": true,
-            "configUrl": "/content/dam/config/image.config.json",
-            "valueType": "string"
-        },
-        {
-            "component": "text",
-            "name": "imageTitle",
-            "label": "Alt Text",
-            "valueType": "string"
-        },
-        {
-          "component": "boolean",
-          "valueType": "boolean",
-          "name": "enableSmartCrop",
-          "label": "Enable Smart Crop",
-          "value":false
-        },
-        {
-            "component": "select",
-            "name": "preset",
-            "value": "na",
-            "label": "Preset",
-            "description": "Preset to be applied to the image. This preset needs to exist on the DM account if using any account other than DynamicMediaNA",
-            "valueType": "string",
-            "options": [
-              {
-                "name": "None",
-                "value": ""
-              },
-              {
-                "name": "Border with Color",
-                "value": "border"
-              },
-              {
-                "name": "Grayscale",
-                "value": "grayscale"
-              }           
-            ]
-        },
-        {
-          "component": "container",
-          "label": "Border Settings",
-          "name": "borderSettings",
-          "valueType": "string",
-          "condition": { "==": [{ "var": "preset" }, "border"] },
-          "fields": [
+    "id": "dynamic-media-image",
+    "fields": [
+      {
+        "component": "custom-asset-namespace:custom-asset",
+        "name": "image",
+        "label": "Image",
+        "required": true,
+        "configUrl": "/content/dam/config/image.config.json",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "imageTitle",
+        "label": "Alt Text",
+        "valueType": "string"
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "enableSmartCrop",
+        "label": "Enable Smart Crop",
+        "value": false
+      },
+      {
+        "component": "select",
+        "name": "preset",
+        "value": "na",
+        "label": "Preset",
+        "description": "Preset to be applied to the image. This preset needs to exist on the DM account if using any account other than DynamicMediaNA",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "None",
+            "value": ""
+          },
+          {
+            "name": "Border with Color",
+            "value": "border"
+          },
+          {
+            "name": "Grayscale",
+            "value": "grayscale"
+          }
+        ]
+      },
+      {
+        "component": "container",
+        "label": "Border Settings",
+        "name": "borderSettings",
+        "valueType": "string",
+        "condition": {
+          "==": [
             {
-              "component": "text",
-              "valueType": "string",
-              "name": "extend",
-              "label": "Extend",
-              "description": "Provide value in Left,top,right,bottom format e.g. 10,10,10,10 to add a 10 pixel padding on all sides"
+              "var": "preset"
             },
-            {
-              "component": "text",
-              "valueType": "string",
-              "name": "borderbgcolor",
-              "label": "Border Color",
-              "description": "Provide hexcode of the color without # e.g. FFFFFF"
-            }
+            "border"
           ]
         },
-        {
-            "component": "select",
-            "name": "rotate",
-            "value": "",
-            "label": "Rotate",
-            "description": "Select the rotation which will rotate the image.",
-            "valueType": "string",
-            "options": [
-                {
-                "name": "None",
-                "value": ""
-                },
-                {
-                "name": "30",
-                "value": "30"
-                },
-                {
-                "name": "45",
-                "value": "45"
-                },
-                {
-                "name": "60",
-                "value": "60"
-                },
-                {
-                "name": "90",
-                "value": "90"
-                },
-                {
-                "name": "120",
-                "value": "120"
-                },
-                {
-                "name": "160",
-                "value": "160"
-                },
-                {
-                "name": "180",
-                "value": "180"
-                },
-                {
-                "name": "230",
-                "value": "230"
-                },
-                {
-                "name": "270",
-                "value": "270"
-                },
-                {
-                "name": "300",
-                "value": "300"
-                },
-                {
-                "name": "330",
-                "value": "330"
-                }
-            ]
-        },
-        {
-            "component": "select",
-            "name": "flip",
-            "value": "",
-            "label": "Flip",
-            "description": "Select the flip for the image either vertical or horizontal or vertical & horizontal",
-            "valueType": "string",
-            "options": [
-                {
-                "name": "None",
-                "value": ""
-                },
-                {
-                "name": "Vertical",
-                "value": "v"
-                },
-                {
-                "name": "Horizontal",
-                "value": "h"
-                },
-                {
-                "name": "Horizontal & Vertical",
-                "value": "hv"
-                }
-            ]
-        },
-        {
+        "fields": [
+          {
             "component": "text",
-            "name": "crop",
-            "value": "",
-            "label": "Crop",
-            "description": "Crop the final image using four values: left, top, width, and height, all in percentages. For example, 10p,10p,50p,50p means crop the image starting 10% from the left and top, and take 50% of the image's width and height",
-            "valueType": "string"
-        },
-        {
-          "component": "text",
-          "name": "advance_parameters",
-          "label": "Advance Parameters",
-          "valueType": "string"
-        },
-        {
-          "component": "boolean",
-          "name": "showInfoIcon",
-          "label": "DM Playground",
-          "description": "Show an icon on the image(top right) that opens selected image in the DM Playground tool(Snapshot) for previewing image transformations",
-          "value": true,
-          "valueType": "boolean"
-        }
-      ]
-    },
-    {
-      "id": "dynamic-media-video",
-      "fields": [
-        {
-          "component": "custom-asset-namespace:custom-asset",
-          "name": "video",
-          "required": true,
-          "label": "Video",
-          "configUrl": "/content/dam/config/video.config.json",
-          "valueType": "string"
-        },
-        {
-          "component": "boolean",
-          "valueType": "boolean",
-          "name": "enableSmartCrop",
-          "label": "Enable Smart Crop",
-          "value":false
-        },
-        {
-          "component": "text",
-          "name": "videoTitle",
-          "label": "Video Title / Alt Text",
-          "description": "Accessible title for the video",
-          "valueType": "string"
-        },
-        {
-          "component": "boolean",
-          "name": "autoplay",
-          "value": false,
-          "label": "Autoplay",
-          "description": "Automatically start playing the video when loaded (will be muted for browser compatibility)",
-          "valueType": "boolean"
-        },
-        {
-          "component": "boolean",
-          "name": "loop",
-          "value": false,
-          "label": "Loop",
-          "description": "Loop the video continuously",
-          "valueType": "boolean"
-        },
-        {
-          "component": "boolean",
-          "name": "muted",
-          "value": false,
-          "label": "Muted",
-          "description": "Start the video muted",
-          "valueType": "boolean"
-        }
-      ]
+            "valueType": "string",
+            "name": "extend",
+            "label": "Extend",
+            "description": "Provide value in Left,top,right,bottom format e.g. 10,10,10,10 to add a 10 pixel padding on all sides"
+          },
+          {
+            "component": "text",
+            "valueType": "string",
+            "name": "borderbgcolor",
+            "label": "Border Color",
+            "description": "Provide hexcode of the color without # e.g. FFFFFF"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "rotate",
+        "value": "",
+        "label": "Rotate",
+        "description": "Select the rotation which will rotate the image.",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "None",
+            "value": ""
+          },
+          {
+            "name": "30",
+            "value": "30"
+          },
+          {
+            "name": "45",
+            "value": "45"
+          },
+          {
+            "name": "60",
+            "value": "60"
+          },
+          {
+            "name": "90",
+            "value": "90"
+          },
+          {
+            "name": "120",
+            "value": "120"
+          },
+          {
+            "name": "160",
+            "value": "160"
+          },
+          {
+            "name": "180",
+            "value": "180"
+          },
+          {
+            "name": "230",
+            "value": "230"
+          },
+          {
+            "name": "270",
+            "value": "270"
+          },
+          {
+            "name": "300",
+            "value": "300"
+          },
+          {
+            "name": "330",
+            "value": "330"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "flip",
+        "value": "",
+        "label": "Flip",
+        "description": "Select the flip for the image either vertical or horizontal or vertical & horizontal",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "None",
+            "value": ""
+          },
+          {
+            "name": "Vertical",
+            "value": "v"
+          },
+          {
+            "name": "Horizontal",
+            "value": "h"
+          },
+          {
+            "name": "Horizontal & Vertical",
+            "value": "hv"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "name": "crop",
+        "value": "",
+        "label": "Crop",
+        "description": "Crop the final image using four values: left, top, width, and height, all in percentages. For example, 10p,10p,50p,50p means crop the image starting 10% from the left and top, and take 50% of the image's width and height",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "advance_parameters",
+        "label": "Advance Parameters",
+        "valueType": "string"
+      },
+      {
+        "component": "boolean",
+        "name": "showInfoIcon",
+        "label": "DM Playground",
+        "description": "Show an icon on the image(top right) that opens selected image in the DM Playground tool(Snapshot) for previewing image transformations",
+        "value": true,
+        "valueType": "boolean"
+      }
+    ]
+  },
+  {
+    "id": "dynamic-media-video",
+    "fields": [
+      {
+        "component": "custom-asset-namespace:custom-asset",
+        "name": "video",
+        "required": true,
+        "label": "Video",
+        "configUrl": "/content/dam/config/video.config.json",
+        "valueType": "string"
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "enableSmartCrop",
+        "label": "Enable Smart Crop",
+        "value": false
+      },
+      {
+        "component": "text",
+        "name": "videoTitle",
+        "label": "Video Title / Alt Text",
+        "description": "Accessible title for the video",
+        "valueType": "string"
+      },
+      {
+        "component": "boolean",
+        "name": "autoplay",
+        "value": false,
+        "label": "Autoplay",
+        "description": "Automatically start playing the video when loaded (will be muted for browser compatibility)",
+        "valueType": "boolean"
+      },
+      {
+        "component": "boolean",
+        "name": "loop",
+        "value": false,
+        "label": "Loop",
+        "description": "Loop the video continuously",
+        "valueType": "boolean"
+      },
+      {
+        "component": "boolean",
+        "name": "muted",
+        "value": false,
+        "label": "Muted",
+        "description": "Start the video muted",
+        "valueType": "boolean"
+      }
+    ]
   },
   {
     "id": "quote",
@@ -1472,54 +1647,54 @@
     ]
   },
   {
-      "id": "search",
-      "fields": [
-        {
-          "component": "aem-content",
-          "name": "searchPath",
-          "label": "Search Path"
-        },
-        {
-          "component": "select",
-          "name": "searchstyle",
-          "label": "Search Style",
-          "options": [
-            {
-              "name": "Search Bar",
-              "value": "search-bar"
-            },
-            {
-              "name": "Search Icon",
-              "value": "search-icon"
-            }
-          ]
-        },
-        {
-          "component": "text",
-          "valueType": "number",
-          "name": "pageSize",
-          "label": "Results Per Page",
-          "value": "10",
-          "description": "Number of search results to show per page in the expanded results view."
-        },
-        {
-          "component": "aem-content",
-          "valueType": "string",
-          "name": "assetSearchPath",
-          "label": "Asset Search Path",
-          "description": "Optional DAM folder to include in search results (e.g. /content/dam/my-site). Assets are returned alongside pages — images render as thumbnails, documents as icons.",
-          "validation": {
-            "rootPath": "/content/dam"
+    "id": "search",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "searchPath",
+        "label": "Search Path"
+      },
+      {
+        "component": "select",
+        "name": "searchstyle",
+        "label": "Search Style",
+        "options": [
+          {
+            "name": "Search Bar",
+            "value": "search-bar"
+          },
+          {
+            "name": "Search Icon",
+            "value": "search-icon"
           }
-        },
-        {
-          "component": "text",
-          "valueType": "string",
-          "name": "excludeAssetPaths",
-          "label": "Excluded Asset Paths",
-          "description": "Comma- or newline-separated DAM paths to exclude from asset search results. Any asset whose path starts with one of these prefixes is dropped. Example: /content/dam/my-site/internal, /content/dam/my-site/drafts"
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "number",
+        "name": "pageSize",
+        "label": "Results Per Page",
+        "value": "10",
+        "description": "Number of search results to show per page in the expanded results view."
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "assetSearchPath",
+        "label": "Asset Search Path",
+        "description": "Optional DAM folder to include in search results (e.g. /content/dam/my-site). Assets are returned alongside pages — images render as thumbnails, documents as icons.",
+        "validation": {
+          "rootPath": "/content/dam"
         }
-      ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "excludeAssetPaths",
+        "label": "Excluded Asset Paths",
+        "description": "Comma- or newline-separated DAM paths to exclude from asset search results. Any asset whose path starts with one of these prefixes is dropped. Example: /content/dam/my-site/internal, /content/dam/my-site/drafts"
+      }
+    ]
   },
   {
     "id": "carousel",
@@ -1540,12 +1715,31 @@
         "description": "Time between slides when Auto-slide is on.",
         "value": "5000",
         "options": [
-          { "name": "3 seconds", "value": "3000" },
-          { "name": "5 seconds", "value": "5000" },
-          { "name": "7 seconds", "value": "7000" },
-          { "name": "10 seconds", "value": "10000" }
+          {
+            "name": "3 seconds",
+            "value": "3000"
+          },
+          {
+            "name": "5 seconds",
+            "value": "5000"
+          },
+          {
+            "name": "7 seconds",
+            "value": "7000"
+          },
+          {
+            "name": "10 seconds",
+            "value": "10000"
+          }
         ],
-        "condition": { "===": [{ "var": "autoplay" }, true] }
+        "condition": {
+          "===": [
+            {
+              "var": "autoplay"
+            },
+            true
+          ]
+        }
       },
       {
         "component": "select",
@@ -1555,10 +1749,22 @@
         "value": "",
         "description": "Applies to all cards in this carousel.",
         "options": [
-          { "name": "None", "value": "" },
-          { "name": "Zoom In Effect", "value": "zoom-in" },
-          { "name": "Zoom Out Effect", "value": "zoom-out" },
-          { "name": "Swipe", "value": "big-zoom" }
+          {
+            "name": "None",
+            "value": ""
+          },
+          {
+            "name": "Zoom In Effect",
+            "value": "zoom-in"
+          },
+          {
+            "name": "Zoom Out Effect",
+            "value": "zoom-out"
+          },
+          {
+            "name": "Swipe",
+            "value": "big-zoom"
+          }
         ]
       }
     ]
@@ -1567,12 +1773,12 @@
     "id": "video",
     "fields": [
       {
-       "component": "text",
-       "valueType": "string",
-       "required": true,
-       "description" : "Any direct full URL of publicly available video. e.g. video URL of aem publish instance, Dynamic Media etc.",
-       "name": "videoUrl",
-       "label": "Video Url"
+        "component": "text",
+        "valueType": "string",
+        "required": true,
+        "description": "Any direct full URL of publicly available video. e.g. video URL of aem publish instance, Dynamic Media etc.",
+        "name": "videoUrl",
+        "label": "Video Url"
       }
     ]
   },
@@ -1645,60 +1851,75 @@
   {
     "id": "dm-template",
     "fields": [
-        {
-          "component": "select",
-          "name": "config_source",
-          "value": "inline",
-          "label": "Template Config Source",
-          "description": "Choose the source to provide the template path and variable configurations.",
-          "valueType": "string",
-          "options": [
+      {
+        "component": "select",
+        "name": "config_source",
+        "value": "inline",
+        "label": "Template Config Source",
+        "description": "Choose the source to provide the template path and variable configurations.",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Content Fragment",
+            "value": "cf"
+          },
+          {
+            "name": "Inline",
+            "value": "inline"
+          }
+        ]
+      },
+      {
+        "condition": {
+          "===": [
             {
-              "name": "Content Fragment",
-              "value": "cf"
+              "var": "config_source"
             },
-            {
-              "name": "Inline",
-              "value": "inline"
-            }
+            "inline"
           ]
         },
-        {
-          "condition": {
-            "===": [{ "var": "config_source" }, "inline"]
-          },
-          "component": "text",
-          "name": "dm_template_url",
-          "label": "Template Path",
-          "description": "Provide full URL for the Dynamic Media Template. Templates should have variables which can be configured in Variable Mappings field.",
-          "valueType": "string"
+        "component": "text",
+        "name": "dm_template_url",
+        "label": "Template Path",
+        "description": "Provide full URL for the Dynamic Media Template. Templates should have variables which can be configured in Variable Mappings field.",
+        "valueType": "string"
+      },
+      {
+        "condition": {
+          "===": [
+            {
+              "var": "config_source"
+            },
+            "inline"
+          ]
         },
-        {
-          "condition": {
-            "===": [{ "var": "config_source" }, "inline"]
-          },          
-          "component": "text",
-          "valueType": "string",
-          "name": "var_mapping",
-          "value": "",
-          "multi": true,
-          "label": "Variable Mappings",
-          "description": "Provide variable values. These values should be exposed in the DM template inorder to get replaced e.g. $leftImage=DynamicMediaNA/adobestock-167833331"
+        "component": "text",
+        "valueType": "string",
+        "name": "var_mapping",
+        "value": "",
+        "multi": true,
+        "label": "Variable Mappings",
+        "description": "Provide variable values. These values should be exposed in the DM template inorder to get replaced e.g. $leftImage=DynamicMediaNA/adobestock-167833331"
+      },
+      {
+        "condition": {
+          "===": [
+            {
+              "var": "config_source"
+            },
+            "cf"
+          ]
         },
-        {
-          "condition": {
-            "===": [{ "var": "config_source" }, "cf"]
-          },
-          "component": "aem-content",
-          "name": "reference",
-          "label": "Reference",
-          "valueType": "string",
-          "required": true,
-          "validation": {
-              "rootPath": "/content/dam"
-          }
+        "component": "aem-content",
+        "name": "reference",
+        "label": "Reference",
+        "valueType": "string",
+        "required": true,
+        "validation": {
+          "rootPath": "/content/dam"
         }
-      ]
+      }
+    ]
   },
   {
     "id": "teaser",
@@ -1833,7 +2054,7 @@
         "component": "select",
         "name": "ctastyle",
         "label": "CTA Style",
-         "options": [
+        "options": [
           {
             "name": "Link",
             "value": "link"
@@ -7252,24 +7473,38 @@
           }
         ]
       },
-        {
-          "component": "aem-content",
-          "name": "contentFragmentFolder",
-          "label": "Content Fragment Folder",
-          "description": "Select folder containing multiple doctor Content Fragments",
-          "valueType": "string",
-          "validation": {
-            "rootPath": "/content/dam"
-          },
-          "condition": { "==": [{ "var": "dataSourceType" }, "content-fragments"] }
+      {
+        "component": "aem-content",
+        "name": "contentFragmentFolder",
+        "label": "Content Fragment Folder",
+        "description": "Select folder containing multiple doctor Content Fragments",
+        "valueType": "string",
+        "validation": {
+          "rootPath": "/content/dam"
         },
+        "condition": {
+          "==": [
+            {
+              "var": "dataSourceType"
+            },
+            "content-fragments"
+          ]
+        }
+      },
       {
         "component": "text",
         "valueType": "string",
         "name": "apiUrl",
         "label": "API URL",
         "description": "External API endpoint for doctor data",
-        "condition": { "==": [{ "var": "dataSourceType" }, "api"] }
+        "condition": {
+          "==": [
+            {
+              "var": "dataSourceType"
+            },
+            "api"
+          ]
+        }
       },
       {
         "component": "boolean",
@@ -7305,7 +7540,185 @@
         "name": "submitUrl",
         "label": "Submit URL",
         "description": "URL to redirect to when Book Appointment is clicked (if Submit Action is enabled)",
-        "condition": { "==": [{ "var": "enableSubmitAction" }, true] }
+        "condition": {
+          "==": [
+            {
+              "var": "enableSubmitAction"
+            },
+            true
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "hero-dark",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Background Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "carousel-teaser-slide",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Thumbnail",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Eyebrow and Title",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "tabs-distance",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "drag_label",
+        "value": "",
+        "label": "Drag Label",
+        "description": "Hint shown above the distance track (desktop only), e.g. \"Drag to travel the distance\""
+      }
+    ]
+  },
+  {
+    "id": "tabs-distance-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "value": "",
+        "label": "Tab Title"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "content_image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "content_richtext",
+        "value": "",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "tabs-portfolio-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "value": "",
+        "label": "Tab Title"
+      },
+      {
+        "component": "richtext",
+        "name": "content_richtext",
+        "value": "",
+        "label": "Content",
+        "valueType": "string"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "content_image",
+        "label": "Image",
+        "multi": false
+      }
+    ]
+  },
+  {
+    "id": "cards-stats-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Icon",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Statement",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "tabs-news-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "value": "",
+        "label": "Tab",
+        "description": "Tab this article appears under (articles with the same tab are grouped)"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "content_image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "content_richtext",
+        "value": "",
+        "label": "Content",
+        "valueType": "string",
+        "description": "Category · Date line, linked heading, optional summary"
       }
     ]
   }

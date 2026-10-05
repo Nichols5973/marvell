@@ -1,0 +1,22 @@
+{
+  "variantName": "tabs-news",
+  "baseBlock": "tabs",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "description": "Tabbed news panels (Newsroom/Blog/Events, plus hidden 'All'), each with 5 article links (featured, media, compact)",
+    "sectionStyle": "light-grey",
+    "section": "News and insights"
+  },
+  "contentPattern": "One row per tab: [label e.g. Newsroom | for each article: image, meta paragraph \"Category · Date\", h3 linked title, optional summary paragraph (typically only the first article)]",
+  "usage": {
+    "pagesUsing": [
+      "https://www.marvell.com/"
+    ],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-05T15:57:43.688Z"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "tabs-news"
+  ]
+}

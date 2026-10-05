@@ -1,0 +1,22 @@
+{
+  "variantName": "hero-dark",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "description": "Background image, H1, paragraph, outline CTA",
+    "sectionStyle": "dark",
+    "section": "Hero with overlapping teaser carousel"
+  },
+  "contentPattern": "Row 1: background image (alt 'Abstract blue gradient'). Row 2: h1 'Marvell is how AI scales', paragraph, link 'Watch the keynote' -> /company/events/computex-2026.html",
+  "usage": {
+    "pagesUsing": [
+      "https://www.marvell.com/"
+    ],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-05T15:50:42.722Z"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "hero-dark"
+  ]
+}

@@ -35,7 +35,16 @@
       "text",
       "title",
       "title-block",
-      "video"
+      "video",
+      "hero-dark",
+      "carousel-teaser",
+      "tabs-distance",
+      "tabs-portfolio",
+      "cards-stats",
+      "tabs-news",
+      "dynamic-media-image",
+      "dynamic-media-video",
+      "fragment-list"
     ]
   },
   {
@@ -62,5 +71,8 @@
       "title-block",
       "video"
     ]
+  },
+  {
+    "...": "../blocks/*/_*.json#/filters"
   }
 ]

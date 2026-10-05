@@ -1,630 +1,413 @@
-import { getMetadata, fetchPlaceholders } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
-import { getHostname } from '../../scripts/utils.js';
+/*
+ * Header: fixed overlay with an inset white bar (logo | centered nav | tool icons),
+ * hover/click mega-menu panels, a language popover, a search panel and auto-hide on scroll.
+ * All copy, links and images come from the nav fragment (content/nav.plain.html):
+ *   section 1: brand (linked logo)
+ *   section 2: one <h2> per menu, followed by its panel content
+ *              (eyebrow <p>, <h3> groups with one or more <ul>, then an optional promo card
+ *              starting at an image-only <p>: image, kicker <p>, <strong> title, link CTA)
+ *   section 3: tools (language icon + <ul> of languages, account link, search link)
+ */
 
-import {
-  getNavigationMenu, formatNavigationJsonData,
-} from './navigation.js';
-import {
-  getLanguage, getSiteName, TAG_ROOT, PATH_PREFIX, SUPPORTED_LANGUAGES, computeLocalizedUrl, discoverLanguagesFromPlaceholders,
-} from '../../scripts/utils.js';
-import {
-  button,
-  div,
-  img,
-  span,
-  a,
-} from '../../scripts/dom-helpers.js';
+const DESKTOP_MQ = window.matchMedia('(width >= 1025px), (width >= 801px) and (orientation: landscape)');
+const CLOSE_DELAY_MS = 140;
+const PANEL_TRANSITION_MS = 560;
+const SCROLL_DELTA = 4;
 
-import { isAuthorEnvironment } from '../../scripts/scripts.js';
-
-// media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
-const siteName = await getSiteName();
-
-function closeOnEscape(e) {
-  if (e.code === 'Escape') {
-    const nav = document.getElementById('nav');
-    const navSections = nav.querySelector('.nav-sections');
-    const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
-    if (navSectionExpanded && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavSections(navSections);
-      navSectionExpanded.focus();
-    } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleMenu(nav, navSections);
-      nav.querySelector('button').focus();
-    }
-  }
-}
-
-function closeOnFocusLost(e) {
-  const nav = e.currentTarget;
-  if (!nav.contains(e.relatedTarget)) {
-    const navSections = nav.querySelector('.nav-sections');
-    const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
-    if (navSectionExpanded && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavSections(navSections, false);
-    } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleMenu(nav, navSections, false);
-    }
-  }
-}
-
-function openOnKeydown(e) {
-  const focused = document.activeElement;
-  const isNavDrop = focused.className === 'nav-drop';
-  if (isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
-    const dropExpanded = focused.getAttribute('aria-expanded') === 'true';
-    // eslint-disable-next-line no-use-before-define
-    toggleAllNavSections(focused.closest('.nav-sections'));
-    focused.setAttribute('aria-expanded', dropExpanded ? 'false' : 'true');
-  }
-}
-
-function focusNavSection() {
-  document.activeElement.addEventListener('keydown', openOnKeydown);
-}
+let instanceCount = 0;
 
 /**
- * Toggles all nav sections
- * @param {Element} sections The container element
- * @param {Boolean} expanded Whether the element should be expanded or collapsed
+ * Loads the nav fragment: /content first (local preview), then the site root (DA/EDS).
+ * @returns {Promise<HTMLElement|null>}
  */
-function toggleAllNavSections(sections, expanded = false) {
-    const navSections = sections.querySelectorAll('.nav-sections .default-content-wrapper > ul > li');
-    if (navSections && navSections.length > 0) {
-      navSections.forEach((section) => {
-        section.setAttribute('aria-expanded', expanded);
-      });
-    }
-}
-
-async function overlayLoad(navSections) {
-  const langCode = getLanguage();
-  const placeholdersData = await fetchLanguagePlaceholders();
-  const navOverlay = navSections.querySelector(constants.NAV_MENU_OVERLAY_WITH_SELECTOR);
-  if (!navOverlay) {
-    const structuredNav = formatNavigationJsonData(window.navigationData[`/${langCode}`]);
-    // Add navigation menu to header
-    navSections.append(getNavigationMenu(structuredNav, placeholdersData));
-  }
-  const rightColumn = navSections.querySelector('.nav-menu-column.right');
-  const leftColumn = navSections.querySelector('.nav-menu-column.left');
-  isDesktop.addEventListener('change', () => closesideMenu(leftColumn, rightColumn));
-  document.body.addEventListener('click', (e) => closesearchbar(e, navSections));
-  document.body.addEventListener('keydown', (e) => closesearchbar(e, navSections));
-}
-
-/**
- * Toggles the entire nav
- * @param {Element} nav The container element
- * @param {Element} navSections The nav sections within the container element
- * @param {*} forceExpanded Optional param to force nav expand behavior when not null
- */
-async function toggleMenu(nav, navSections, forceExpanded = null) {
-
-  /*
-  if (window.navigationData) {
-    await overlayLoad(navSections);
-  } else {
-    return;
-  }*/
-  
-  const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
-  const button = nav.querySelector('.nav-hamburger button');
-  document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
-  nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-  toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
-  button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
-  // enable nav dropdown keyboard accessibility
-  const navDrops = navSections.querySelectorAll('.nav-drop');
-  if (isDesktop.matches) {
-    navDrops.forEach((drop) => {
-      if (!drop.hasAttribute('tabindex')) {
-        drop.setAttribute('tabindex', 0);
-        drop.addEventListener('focus', focusNavSection);
-      }
-    });
-  } else {
-    navDrops.forEach((drop) => {
-      drop.removeAttribute('tabindex');
-      drop.removeEventListener('focus', focusNavSection);
-    });
-  }
-
-  // enable menu collapse on escape keypress
-  if (!expanded || isDesktop.matches) {
-    // collapse menu on escape press
-    window.addEventListener('keydown', closeOnEscape);
-    // collapse menu on focus lost
-    nav.addEventListener('focusout', closeOnFocusLost);
-  } else {
-    window.removeEventListener('keydown', closeOnEscape);
-    nav.removeEventListener('focusout', closeOnFocusLost);
-  }
-}
-
-
-function settingAltTextForSearchIcon() {
-  const searchImage = document.querySelector('.icon-search-light');
-  if (!searchImage) {
-    // eslint-disable-next-line no-console
-    console.debug('header: .icon-search-light not found; skipping search icon init');
-    return;
-  }
-  searchImage.style.cursor = 'pointer';
-  searchImage.addEventListener('click', () => {
-    createSearchBox();
+async function fetchNav() {
+  let resp = await fetch('/content/nav.plain.html');
+  if (!resp.ok) resp = await fetch('/nav.plain.html');
+  if (!resp.ok) return null;
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = await resp.text();
+  // resolve fragment-relative image paths against the fragment URL, not the current page
+  wrapper.querySelectorAll('img').forEach((img) => {
+    const src = img.getAttribute('src');
+    if (src && !/^(https?:|\/|data:)/.test(src)) img.setAttribute('src', new URL(src, resp.url).pathname);
   });
-  searchImage.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      createSearchBox();
-      e.currentTarget.nextElementSibling.focus();
+  return wrapper;
+}
+
+function el(tag, className, attrs = {}) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+  return node;
+}
+
+/** Shows only the icon; its text (link text or alt) becomes a visually hidden label. */
+function labelIcon(control, img, text = img.alt) {
+  const label = el('span', 'nav-visually-hidden');
+  label.textContent = text;
+  img.alt = '';
+  control.append(img, label);
+}
+
+/**
+ * Splits a section's children into chunks, each starting at an element matching `selector`.
+ * @returns {{ head: Element, body: Element[] }[]}
+ */
+function chunkBy(children, selector) {
+  const chunks = [];
+  children.forEach((child) => {
+    if (child.matches(selector)) chunks.push({ head: child, body: [] });
+    else if (chunks.length) chunks[chunks.length - 1].body.push(child);
+  });
+  return chunks;
+}
+
+/** Builds a promo card link from its paragraphs (image, kicker, strong title, link CTA). */
+function buildPromo(nodes) {
+  const link = nodes.map((n) => n.querySelector('a')).find(Boolean);
+  const card = el('a', 'nav-promo', { href: link ? link.getAttribute('href') : '#' });
+  const img = nodes.map((n) => n.querySelector('img')).find(Boolean);
+  if (img) {
+    const media = el('div', 'nav-promo-image');
+    img.setAttribute('loading', 'lazy');
+    media.append(img);
+    card.append(media);
+  }
+  nodes.filter((n) => n.tagName === 'P' && !n.querySelector('img')).forEach((p) => {
+    const strong = p.querySelector('strong');
+    if (p.querySelector('a')) {
+      const cta = el('span', 'nav-promo-cta');
+      cta.textContent = p.textContent.trim();
+      card.append(cta);
+    } else if (strong) {
+      const title = el('strong', 'nav-promo-title');
+      title.textContent = strong.textContent.trim();
+      card.append(title);
+    } else if (p.textContent.trim()) {
+      const kicker = el('span', 'nav-promo-kicker');
+      kicker.textContent = p.textContent.trim();
+      card.append(kicker);
     }
   });
-  //searchImage.setAttribute('title', listOfAllPlaceholdersData.searchAltText || 'Search');
+  return card;
 }
 
+/** Builds a mega-menu panel from the elements that follow a menu's <h2>. */
+function buildPanel(nodes, id) {
+  const panel = el('div', 'nav-dropdown', { id, hidden: '', 'aria-hidden': 'true' });
+  const content = el('div', 'nav-dropdown-content');
+  const main = el('div', 'nav-dropdown-main');
+  const groups = el('div', 'nav-groups');
+  // an image-only paragraph starts the promo card; everything after it belongs to the card
+  const isImageOnly = (n) => n.tagName === 'P' && n.querySelector('img') && !n.textContent.trim();
+  const promoStart = nodes.findIndex(isImageOnly);
+  const promo = promoStart >= 0 ? buildPromo(nodes.slice(promoStart)) : null;
+  const menuNodes = promoStart >= 0 ? nodes.slice(0, promoStart) : nodes;
 
-function handleEnterKey(event) {
-  if (event.key !== 'Enter') return;
-  const inputValue = document.querySelector('.search-container input').value;
-  //const url = (listOfAllPlaceholdersData.searchRedirectUrl || 'https://wknd.site/en/search?q=') + inputValue;
-  
-  const url = `/content/${siteName}/search-results.html?q=`+ inputValue;
-
-  if (inputValue) window.location.href = url;
-}
-
-function createSearchBox() {
-  const navWrapper = document.querySelector('.nav-wrapper');
-  const headerWrapper = document.querySelector('.header-wrapper');
-  const navTools = document.querySelector('.nav-tools p');
-  let searchContainer = headerWrapper.querySelector('.search-container');
-  let cancelContainer = navWrapper.querySelector('.cancel-container');
-  let overlay = document.querySelector('.overlay');
-  const searchImage = document.querySelector('.icon-search-light');
-  document.body.classList.add('no-scroll');
-  if (searchContainer) {
-    const isVisible = searchContainer.style.display !== 'none';
-    searchContainer.style.display = isVisible ? 'none' : 'flex';
-    if (cancelContainer) {
-      cancelContainer.style.display = isVisible ? 'none' : 'flex';
+  const groupChunks = chunkBy(menuNodes, 'h3');
+  menuNodes.forEach((node) => {
+    if (node.tagName === 'P' && !node.querySelector('a, img') && !groupChunks.some((c) => c.body.includes(node))) {
+      const eyebrow = el('p', 'nav-dropdown-eyebrow');
+      eyebrow.textContent = node.textContent.trim();
+      main.append(eyebrow);
     }
-    overlay.style.display = isVisible ? 'none' : 'block';
+  });
 
-    searchImage.style.display = isVisible ? 'block' : 'none';
-  } else {
-    cancelContainer = div(
-      {
-        class: 'cancel-container',
-        role: 'button',
-        tabindex: 0,
-        'aria-label': 'close Search Box',
-      },
-    );
-    const cancelImg = img({ class: 'cancel-image' });
-    cancelImg.src = `${window.hlx.codeBasePath}/icons/cancel.svg`;
-    cancelImg.alt = 'cancel';
-    cancelImg.style.cssText = 'display: flex; cursor: pointer;';
-    cancelContainer.addEventListener('click', () => {
-      closeSearchBox();
-    });
-    cancelContainer.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === 'Escape') {
-        closeSearchBox();
-      }
-    });
-    cancelContainer.appendChild(cancelImg);
-    navTools.appendChild(cancelContainer);
-    // Hide search icon
-    searchImage.style.display = 'none';
-    searchContainer = div({ class: 'search-container' });
-    overlay = div({ class: 'overlay' });
-    document.body.appendChild(overlay);
-    const searchInputContainer = div({ class: 'search-input-container' });
-    const searchInputBox = document.createElement('input');
-    const searchIcon = img({ class: 'search-icon' });
-    searchIcon.src = `${window.hlx.codeBasePath}/icons/search-light.svg`;
-    searchIcon.alt = 'search';
-    searchIcon.addEventListener('click', () => {
-      if (searchInputBox.value) {
-        ///window.location.href = (listOfAllPlaceholdersData.searchRedirectUrl || '<sitename>/en/search?q=') + searchInputBox.value;
-        window.location.href = `/content/${siteName}/search-results.html?q=` + searchInputBox.value;
-      }
-    });
-
-    Object.assign(searchInputBox, {
-      type: 'search',
-      id: 'search-input',
-      name: 'myInput',
-      placeholder: 'Search WKND',
-      value: '',
-      autocomplete: 'off',
-    });
-    searchInputBox.addEventListener('keydown', handleEnterKey);
-    searchInputContainer.append(searchInputBox, searchIcon);
-    const searchContainerWrapper = div({ class: 'search-input-wrapper' });
-    searchContainerWrapper.append(searchInputContainer);
-    searchContainer.appendChild(searchContainerWrapper);
-    
-    navTools.appendChild(searchContainer);
-  }
-}
-
-/**
- * Toggles the entire nav
- * @param {Element} nav The container element
- * @param {Element} navSections The nav sections within the container element
- * @param {*} forceExpanded Optional param to force nav expand behavior when not null
- */
-
-function closeSearchBox() {
-  const navWrapper = document.querySelector('.nav-wrapper');
-  const headerWrapper = document.querySelector('.header-wrapper');
-  const searchContainer = headerWrapper ? headerWrapper.querySelector('.search-container') : null;
-  const cancelContainer = navWrapper ? navWrapper.querySelector('.cancel-container') : null;
-  // const overlay = document.querySelector('.overlay');
-  //const searchImage = document.querySelector('.-light');
-  const searchImage = document.querySelector('.icon-search-light');
-  // if(searchContainer){
-  //   searchContainer.style.display = 'none';
-  // }
-  if(cancelContainer){
-    cancelContainer.style.display = 'none';
-  }
-  if (searchImage) {
-    searchImage.style.display = 'flex';
-  }
-  // if (overlay) {
-  //   overlay.style.display = 'none';
-  // }
-  document.body.classList.remove('no-scroll');
-}
-
-const closeSearchOnFocusOut = (e, navTools) => {
-  const headerWrapper = document.querySelector('.header-wrapper');
-  const searchContainer = headerWrapper.querySelector('.search-container');
-
-  if (searchContainer && searchContainer.style.display !== 'none') {
-    const cancelContainer = navTools ? navTools.querySelector('.cancel-container') : null;
-    const searchImage = navTools ? navTools.querySelector('.icon-search-light') : null;
-    const isClickInside = (searchContainer && searchContainer.contains && searchContainer.contains(e.target))
-    || (cancelContainer && cancelContainer.contains && cancelContainer.contains(e.target))
-    || (searchImage && searchImage.contains && searchImage.contains(e.target));
-    if (!isClickInside) {
-      closeSearchBox();
-    }
-  }
-};
-
-async function addLogoLink(langCode) {
-
-  //urn:aemconnection:/content/wknd-universal/language-masters/en/magazine/jcr:content
-  const currentLang = langCode || getLanguage();
-  const aueResource = document.body.getAttribute('data-aue-resource')
-    ?.replace(new RegExp(`^.*?(\\/content.*?\\/${currentLang}).*$`), '$1');
-  
-  let logoLink = '';
-    if(aueResource !== null && aueResource !== undefined && aueResource !== ''){
-      logoLink = aueResource+'.html';
+  groupChunks.forEach(({ head, body }) => {
+    const group = el('div', 'nav-group');
+    const lists = body.filter((n) => n.tagName === 'UL');
+    group.append(head);
+    if (lists.length > 1) {
+      group.classList.add('nav-group-multi');
+      const columns = el('div', 'nav-group-columns');
+      columns.append(...lists);
+      group.append(columns);
     } else {
-      if(langCode === 'en') {
-        logoLink = window.location.origin;
-      } else {
-        logoLink = window.location.origin + `/${langCode}`;
-      }
+      group.append(...lists);
     }
+    groups.append(group);
+  });
 
-    try {
-      const logoImage = document.querySelector('.nav-brand img');
-      const anchor = document.createElement('a');
-      Object.assign(anchor, {
-          href: logoLink,
-          title: logoImage?.alt,
-      });
-      const picture = document.querySelector('.nav-brand picture');
-      if (picture) anchor.appendChild(picture);
-      const targetElement = document.querySelector('.nav-brand .default-content-wrapper');
-      if (targetElement) {
-          targetElement.appendChild(anchor);
-      }
-    } catch (error) {
-      console.error('Error in addLogoLink:', error);
-    }
+  main.append(groups);
+  content.append(main);
+  if (promo) {
+    content.classList.add('has-promo');
+    content.append(promo);
+  }
+  const count = groupChunks.length;
+  panel.classList.add(`nav-dropdown-cols-${count}`);
+  if (groupChunks.some(({ body }) => body.filter((n) => n.tagName === 'UL').length > 1)) {
+    panel.classList.add('has-multi-column-group');
+  }
+  panel.append(content);
+  return panel;
 }
 
+export default async function decorate(block) {
+  const fragment = await fetchNav();
+  block.textContent = '';
+  if (!fragment) return;
+  instanceCount += 1;
+  const uid = `nav-${instanceCount}`;
 
-async function applyCFTheme(themeCFReference) {
-   if (!themeCFReference) return;
-  
-  const CONFIG = {
-    WRAPPER_SERVICE_URL: 'https://3635370-refdemoapigateway-stage.adobeioruntime.net/api/v1/web/ref-demo-api-gateway/fetch-cf',
-    GRAPHQL_QUERY: '/graphql/execute.json/ref-demo-eds/BrandThemeByPath',
-    EXCLUDED_THEME_KEYS: new Set(['brandSite', 'brandLogo'])
+  const [brandSection, menuSection, toolsSection] = [...fragment.children];
+
+  const header = block.closest('header') || document.querySelector('header');
+  const nav = el('div', 'nav', { id: 'nav' });
+  const inner = el('div', 'nav-inner');
+  const bar = el('div', 'nav-bar');
+
+  // brand
+  const brandLink = brandSection?.querySelector('a');
+  if (brandLink) {
+    brandLink.className = 'nav-brand';
+    bar.append(brandLink);
+  }
+
+  // menus + panels
+  const list = el('ul', 'nav-list');
+  const panels = [];
+  const triggers = [];
+  chunkBy(menuSection ? [...menuSection.children] : [], 'h2').forEach(({ head, body }, i) => {
+    const panelId = `${uid}-panel-${i}`;
+    const li = el('li', 'nav-item');
+    const trigger = el('button', 'nav-trigger', { type: 'button', 'aria-expanded': 'false', 'aria-controls': panelId });
+    trigger.textContent = head.textContent.trim();
+    li.append(trigger);
+    list.append(li);
+    triggers.push(trigger);
+    panels.push(buildPanel(body, panelId));
+  });
+  const sections = el('nav', 'nav-sections', { 'aria-label': 'Main navigation' });
+  sections.append(list);
+  bar.append(sections);
+
+  // tools: language, account, search
+  const tools = el('ul', 'nav-tools');
+  let languageTrigger = null;
+  let languageMenu = null;
+  let searchTrigger = null;
+  let searchPanel = null;
+  const toolNodes = toolsSection ? [...toolsSection.children] : [];
+  toolNodes.forEach((node, i) => {
+    const next = toolNodes[i + 1];
+    const img = node.querySelector('img');
+    const link = node.querySelector('a');
+    if (node.tagName === 'P' && img && !link && next?.tagName === 'UL') {
+      // icon followed by a list -> popover menu (language selector)
+      const item = el('li', 'nav-tool nav-tool-language');
+      languageTrigger = el('button', 'nav-tool-button', {
+        type: 'button', 'aria-expanded': 'false', 'aria-controls': `${uid}-language`,
+      });
+      labelIcon(languageTrigger, img);
+      languageMenu = el('div', 'nav-language-menu', { id: `${uid}-language`, hidden: '' });
+      next.querySelectorAll('a').forEach((a) => {
+        const strong = a.querySelector('strong');
+        if (strong) {
+          a.textContent = strong.textContent;
+          a.classList.add('is-active');
+          a.setAttribute('aria-current', 'true');
+        }
+      });
+      next.className = 'nav-language-list';
+      next.querySelectorAll('a').forEach((a) => a.classList.add('nav-language-link'));
+      languageMenu.append(next);
+      item.append(languageTrigger, languageMenu);
+      tools.append(item);
+    } else if (link && img && /search/i.test(link.getAttribute('href') || '')) {
+      // search link -> search panel; the link target is the results page, alt the label
+      const item = el('li', 'nav-tool nav-tool-search');
+      const label = img.alt || 'Search';
+      searchTrigger = el('button', 'nav-tool-button', {
+        type: 'button', 'aria-expanded': 'false', 'aria-controls': `${uid}-search`,
+      });
+      labelIcon(searchTrigger, img);
+      item.append(searchTrigger);
+      tools.append(item);
+
+      searchPanel = el('div', 'nav-search-panel', { id: `${uid}-search`, hidden: '', 'aria-hidden': 'true' });
+      const form = el('form', 'nav-search-form', { role: 'search', action: link.getAttribute('href') });
+      const formLabel = el('label');
+      const labelText = el('span', 'nav-visually-hidden');
+      labelText.textContent = label;
+      const input = el('input', 'nav-search-input', {
+        type: 'search', name: 'query', placeholder: label, autocomplete: 'off',
+      });
+      formLabel.append(labelText, input);
+      form.append(formLabel);
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = input.value.trim();
+        if (query) window.location.href = `${form.getAttribute('action')}?query=${encodeURIComponent(query)}`;
+      });
+      searchPanel.append(form);
+    } else if (link && img) {
+      // plain icon link (account)
+      const item = el('li', 'nav-tool');
+      link.className = 'nav-tool-link';
+      const text = link.textContent.trim() || img.alt;
+      link.textContent = '';
+      labelIcon(link, img, text);
+      item.append(link);
+      tools.append(item);
+    }
+  });
+  bar.append(tools);
+
+  inner.append(bar, ...panels);
+  if (searchPanel) inner.append(searchPanel);
+  nav.append(inner);
+  block.append(nav);
+
+  /* ---------- behavior ---------- */
+  const hideTimers = new WeakMap();
+  let closeTimer = null;
+
+  const showPanel = (panel) => {
+    clearTimeout(hideTimers.get(panel));
+    if (panel.classList.contains('is-open')) return;
+    panel.hidden = false;
+    panel.setAttribute('aria-hidden', 'false');
+    // commit the closed state so the open transition runs from `hidden`
+    // eslint-disable-next-line no-unused-expressions
+    panel.offsetWidth;
+    panel.classList.add('is-open');
   };
 
-  try {
-    const decodedThemeCFReference = decodeURIComponent(themeCFReference);
-    const hostnameFromPlaceholders = await getHostname();
-    const hostname = hostnameFromPlaceholders ? hostnameFromPlaceholders : getMetadata('hostname');
-    const aemauthorurl = getMetadata('authorurl') || '';
-    const aempublishurl = hostname?.replace('author', 'publish')?.replace(/\/$/, '');
-    const isAuthor = isAuthorEnvironment();
-
-    // Prepare request configuration based on environment
-    const requestConfig = isAuthor 
-      ? {
-          url: `${aemauthorurl}${CONFIG.GRAPHQL_QUERY};path=${decodedThemeCFReference};ts=${Date.now()}`,
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        }
-      : {
-          url: `${CONFIG.WRAPPER_SERVICE_URL}`,
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            graphQLPath: `${aempublishurl}${CONFIG.GRAPHQL_QUERY}`,
-            cfPath: decodedThemeCFReference,
-            variation: `master;ts=${Date.now()}`
-          })
-        };
-
-    // Fetch theme data
-    const response = await fetch(requestConfig.url, {
-      method: requestConfig.method,
-      headers: requestConfig.headers,
-      ...(requestConfig.body && { body: requestConfig.body })
-    });
-
-    if (!response.ok) {
-       console.error(`HTTP error! status: ${response.status}`);
-    }
-
-    let themeCFRes;
-
-    
-    try {
-
-
-       const responseText = await response.text();
-      
-      if (!responseText || responseText.trim() === '') {
-        console.warn('Empty response received from server');
-        return;
-      }
-      themeCFRes = JSON.parse(responseText);
-    } catch (jsonError) {
-      console.error('Error parsing JSON response:', jsonError);
-    }
-    const themeColors = themeCFRes?.data?.brandThemeByPath?.item;
-
-    if (!themeColors) {
-      console.warn('No theme data found in the response');
+  const hidePanel = (panel, immediate = false) => {
+    clearTimeout(hideTimers.get(panel));
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    if (immediate || panel.hidden) {
+      panel.hidden = true;
       return;
     }
+    hideTimers.set(panel, setTimeout(() => {
+      if (!panel.classList.contains('is-open')) panel.hidden = true;
+    }, PANEL_TRANSITION_MS));
+  };
 
-    // Apply theme colors to CSS variables
-    const cssVariables = Object.entries(themeColors)
-      .filter(([key, value]) => 
-        value != null && !CONFIG.EXCLUDED_THEME_KEYS.has(key)
-      )
-      .map(([key, value]) => `  --brand-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}: ${value};`)
-      .join('\n');
+  const closeLanguage = () => {
+    if (!languageMenu) return;
+    languageMenu.classList.remove('is-open');
+    languageMenu.hidden = true;
+    languageTrigger.setAttribute('aria-expanded', 'false');
+  };
 
-    if (cssVariables) {
-      const styleElement = document.createElement('style');
-      styleElement.textContent = `:root {\n${cssVariables}\n}`;
-      document.head.appendChild(styleElement);
-    }
+  const closePanels = (immediate = false) => {
+    clearTimeout(closeTimer);
+    [...panels, searchPanel].filter(Boolean).forEach((p) => hidePanel(p, immediate));
+    triggers.forEach((t) => t.setAttribute('aria-expanded', 'false'));
+    searchTrigger?.setAttribute('aria-expanded', 'false');
+    nav.classList.remove('is-open');
+  };
 
-  } catch (error) {
-    console.error('Error applying theme:', error);
-  }
-}
+  const openPanel = (index) => {
+    if (!DESKTOP_MQ.matches) return;
+    clearTimeout(closeTimer);
+    closeLanguage();
+    [...panels, searchPanel].filter(Boolean).forEach((p, i) => { if (i !== index) hidePanel(p); });
+    showPanel(panels[index]);
+    triggers.forEach((t, i) => t.setAttribute('aria-expanded', String(i === index)));
+    searchTrigger?.setAttribute('aria-expanded', 'false');
+    nav.classList.add('is-open');
+    header?.classList.remove('nav-hidden');
+  };
 
-
-/**
- * loads and decorates the header, mainly the nav
- * @param {Element} block The header block element
- */
-export default async function decorate(block) {
-  // load nav as fragment
-  //const locale = getMetadata('nav');
-
-  const themeCFReference = getMetadata('theme_cf_reference');
-  applyCFTheme(themeCFReference);
-  
-
-  
-  const navMeta = getMetadata('nav');
-  const langCode = getLanguage();
-  console.log("langCode :"+langCode);
-
-   const isAuthor = isAuthorEnvironment();
-    let navPath =`/${langCode}/nav`;
-  
-    if(isAuthor){
-      navPath = navMeta ? new URL(navMeta, window.location).pathname : `/content/${siteName}${PATH_PREFIX}/${langCode}/nav`;
-    }
-   
-
-  
-  //const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-
-  const pathSegments = window.location.pathname.split('/').filter(Boolean);
-  //console.log("pathSegments header: ", pathSegments);
-  const parentPath = pathSegments.length > 2 ? `/${pathSegments.slice(0, 3).join('/')}` : '/';
-  //console.log("parentPath header: ", parentPath);
-  //const navPath = locale ? `/${locale}/nav` : parentPath+'/nav';
-  //const navPath = parentPath=='/' ? locale ? `/${locale}/nav` : '/nav' : locale ? `/${locale}/nav` : parentPath+'/nav';
-  //console.log("navPath header: ", navPath);
-  const fragment = await loadFragment(navPath);
-
-  // decorate nav DOM
-  block.textContent = '';
-  const nav = document.createElement('nav');
-  nav.id = 'nav';
-  while (fragment && fragment.firstElementChild) nav.append(fragment.firstElementChild);
-
-  const classes = ['brand', 'sections', 'tools'];
-  classes.forEach((c, i) => {
-    const section = nav.children[i];
-    if (section) section.classList.add(`nav-${c}`);
+  triggers.forEach((trigger, i) => {
+    trigger.addEventListener('mouseenter', () => openPanel(i));
+    trigger.addEventListener('focusin', () => openPanel(i));
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openPanel(i);
+    });
   });
 
-  const navBrand = nav.querySelector('.nav-brand');
-  const brandLink = navBrand?.querySelector('.button');
-  if (brandLink) {
-    brandLink.className = '';
-    brandLink.closest('.button-container').className = '';
-  }
+  inner.addEventListener('mouseenter', () => clearTimeout(closeTimer));
+  inner.addEventListener('mouseleave', () => {
+    if (!DESKTOP_MQ.matches || searchPanel?.classList.contains('is-open')) return;
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => closePanels(), CLOSE_DELAY_MS);
+  });
 
-  const navSections = nav.querySelector('.nav-sections');
-  if (navSections) {
-    navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-      navSection.addEventListener('click', () => {
-        if (isDesktop.matches) {
-          const expanded = navSection.getAttribute('aria-expanded') === 'true';
-          toggleAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        }
-      });
-    });
-  }
-
-  const navTools = nav.querySelector('.nav-tools');
-  if (navTools) {
-    const contentWrapper = nav.querySelector('.nav-tools > div[class = "default-content-wrapper"]');
-    // Language switcher (minimal UI)
-    try {
-      const currentLang = getLanguage();
-      const langWrap = document.createElement('div');
-      langWrap.className = 'lang-switcher';
-      const langBtn = document.createElement('button');
-      langBtn.type = 'button';
-      langBtn.className = 'lang-button';
-      langBtn.setAttribute('aria-haspopup', 'listbox');
-      langBtn.setAttribute('aria-expanded', 'false');
-      langBtn.textContent = currentLang.toUpperCase();
-      const langMenu = document.createElement('ul');
-      langMenu.className = 'lang-menu';
-      langMenu.setAttribute('role', 'listbox');
-      const langs = await discoverLanguagesFromPlaceholders();
-      const uniqueLangs = [...new Set(langs && langs.length ? langs : ['en'])];
-      if (uniqueLangs.length <= 1) {
-        langBtn.setAttribute('disabled', 'true');
-        langWrap.classList.add('single-lang');
-      }
-      const regionNames = (() => {
-        try { return new Intl.DisplayNames([navigator.language || 'en'], { type: 'region' }); } catch (e) { return null; }
-      })();
-      const languageNames = (() => {
-        try { return new Intl.DisplayNames([navigator.language || 'en'], { type: 'language' }); } catch (e) { return null; }
-      })();
-
-      uniqueLangs.forEach((raw) => {
-        const code = String(raw).replace('_', '-').toLowerCase();
-        const [langPart, regionPart] = code.split('-');
-        const displayCode = `${langPart}${regionPart ? `-${regionPart}` : ''}`.toUpperCase();
-        const country = regionPart ? (regionNames ? regionNames.of(regionPart.toUpperCase()) : regionPart.toUpperCase())
-          : (languageNames ? languageNames.of(langPart) : langPart.toUpperCase());
-
-        const li = document.createElement('li');
-        li.className = 'lang-item';
-        li.setAttribute('role', 'option');
-        li.setAttribute('aria-selected', langPart === currentLang ? 'true' : 'false');
-
-        const link = document.createElement('a');
-        // Use only language segment for routing if site paths are language-based
-        link.href = computeLocalizedUrl(langPart);
-
-        const pre = document.createElement('span');
-        pre.className = 'lang-pretitle';
-        pre.textContent = displayCode;
-
-        const name = document.createElement('span');
-        name.className = 'lang-country';
-        name.textContent = country;
-
-        link.append(name, pre);
-        li.append(link);
-        langMenu.append(li);
-      });
-      langBtn.addEventListener('click', () => {
-        const expanded = langBtn.getAttribute('aria-expanded') === 'true';
-        langBtn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        langWrap.classList.toggle('open', !expanded);
-      });
-      document.addEventListener('click', (e) => {
-        if (!langWrap.contains(e.target)) {
-          langBtn.setAttribute('aria-expanded', 'false');
-          langWrap.classList.remove('open');
-        }
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          langBtn.setAttribute('aria-expanded', 'false');
-          langWrap.classList.remove('open');
-        }
-      });
-      langWrap.append(langBtn, langMenu);
-      const targetContainer = contentWrapper || navTools;
-      targetContainer.append(langWrap);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Language switcher init failed', e);
+  languageTrigger?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const willOpen = languageMenu.hidden;
+    closePanels();
+    closeLanguage();
+    if (willOpen) {
+      languageMenu.hidden = false;
+      languageMenu.classList.add('is-open');
+      languageTrigger.setAttribute('aria-expanded', 'true');
     }
-    // Close Search Container on Focus out
-    document.addEventListener('click', (e) => {
-      closeSearchOnFocusOut(e, navTools);
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab') {
-        const headerWrapper = document.querySelector('.header-wrapper');
-        const searchContainer = headerWrapper ? headerWrapper.querySelector('.search-container') : null;
-        if (searchContainer && searchContainer.style.display !== 'none' && searchContainer.contains(e.target)) {
-          closeSearchBox();
-        }
-      }
-    });
-  }
-  
-  // hamburger for mobile
-  const hamburger = document.createElement('div');
-  hamburger.classList.add('nav-hamburger');
-  hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
-      <span class="nav-hamburger-icon"></span>
-    </button>`;
-  hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-  nav.prepend(hamburger);
-  nav.setAttribute('aria-expanded', 'false');
-  // prevent mobile nav behavior on window resize
-  toggleMenu(nav, navSections, isDesktop.matches);
-  isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
+  });
 
-  const navWrapper = document.createElement('div');
-  navWrapper.className = 'nav-wrapper';
-  navWrapper.append(nav);
-  block.append(navWrapper);
-  settingAltTextForSearchIcon();
-  //fetchingPlaceholdersData();
-  addLogoLink(langCode);
-    // Ensure search icon mask uses correct base path in UE/author/local
-    try {
-      const iconEl = document.querySelector('header .search.search-icon .icon');
-      if (iconEl && window.hlx && window.hlx.codeBasePath) {
-        const iconUrl = `${window.hlx.codeBasePath}/icons/search.svg`;
-        iconEl.style.webkitMask = `url(${iconUrl}) no-repeat center / contain`;
-        iconEl.style.mask = `url(${iconUrl}) no-repeat center / contain`;
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.debug('search icon mask init skipped', e);
+  searchTrigger?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const willOpen = !searchPanel.classList.contains('is-open');
+    closeLanguage();
+    closePanels();
+    if (willOpen) {
+      showPanel(searchPanel);
+      searchTrigger.setAttribute('aria-expanded', 'true');
+      nav.classList.add('is-open');
+      // the panel is still visibility:hidden on this frame; focus once it is visible
+      setTimeout(() => searchPanel.querySelector('input')?.focus(), 60);
     }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (nav.contains(e.target)) return;
+    closeLanguage();
+    if (nav.classList.contains('is-open')) closePanels();
+  });
+
+  nav.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (languageMenu && !languageMenu.hidden) {
+      closeLanguage();
+      languageTrigger.focus();
+    } else if (nav.classList.contains('is-open')) {
+      const expanded = nav.querySelector('[aria-expanded="true"]');
+      closePanels();
+      expanded?.focus();
+    }
+  });
+
+  // leaving the desktop layout closes any open desktop panel/popover
+  DESKTOP_MQ.addEventListener('change', () => {
+    closePanels(true);
+    closeLanguage();
+  });
+
+  /* ---------- auto-hide on scroll (after the first section, like the source hero) ---------- */
+  if (header) {
+    let lastY = Math.max(window.scrollY, 0);
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const y = Math.max(window.scrollY, 0);
+      const hero = document.querySelector('main .section');
+      const heroBottom = hero ? hero.getBoundingClientRect().bottom + y : 0;
+      const delta = y - lastY;
+      if (y < heroBottom || nav.classList.contains('is-open') || nav.contains(document.activeElement)) {
+        header.classList.remove('nav-hidden');
+        lastY = y;
+        return;
+      }
+      if (Math.abs(delta) < SCROLL_DELTA) return;
+      header.classList.toggle('nav-hidden', delta > 0);
+      lastY = y;
+    };
+    const request = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    nav.addEventListener('focusin', () => header.classList.remove('nav-hidden'));
+  }
 }

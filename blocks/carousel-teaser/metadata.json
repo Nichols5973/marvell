@@ -1,0 +1,22 @@
+{
+  "variantName": "carousel-teaser",
+  "baseBlock": "carousel",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "description": "5 rotating teaser slides (thumbnail, eyebrow, title, link) in compact card overlapping hero",
+    "sectionStyle": "dark",
+    "section": "Hero with overlapping teaser carousel"
+  },
+  "contentPattern": "One row per slide: [image | eyebrow paragraph, h3 title]. The h3 title is linked only on some slides (in imported content only the active/featured slide); unlinked slides render as plain cards.",
+  "usage": {
+    "pagesUsing": [
+      "https://www.marvell.com/"
+    ],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-05T15:52:04.188Z"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "carousel-teaser"
+  ]
+}

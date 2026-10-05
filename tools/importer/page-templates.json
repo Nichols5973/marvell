@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "projectType": "xwalk"
+  },
+  "templates": [
+    {
+      "name": "home",
+      "urls": [
+        "https://www.marvell.com/"
+      ],
+      "representativeUrl": "https://www.marvell.com/",
+      "description": "Marvell homepage: dark hero with teaser carousel, distance explorer, portfolio tabs, AI stats cards, news & insights tabs",
+      "urlPattern": "/",
+      "blocks": [
+        {
+          "name": "hero-dark",
+          "instances": [
+            "section.mrvll-hero"
+          ]
+        },
+        {
+          "name": "carousel-teaser",
+          "instances": [
+            "section.mrvll-hero-teaser"
+          ]
+        },
+        {
+          "name": "tabs-distance",
+          "instances": [
+            "section.mrvll-distance-explorer .mrvll-distance-explorer__inner"
+          ]
+        },
+        {
+          "name": "tabs-portfolio",
+          "instances": [
+            "section.mrvll-portfolio .mrvll-portfolio__stage"
+          ]
+        },
+        {
+          "name": "cards-stats",
+          "instances": [
+            "section.mrvll-stats article.mrvll-stats-card"
+          ]
+        },
+        {
+          "name": "tabs-news",
+          "instances": [
+            "section.mrvll-news .mrvll-news__panels"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "1",
+          "name": "Hero with overlapping teaser carousel",
+          "selector": [
+            "div.hero.aem-GridColumn",
+            "section.mrvll-hero"
+          ],
+          "style": "dark",
+          "blocks": [
+            "hero-dark",
+            "carousel-teaser"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "2",
+          "name": "Connectivity leader intro",
+          "selector": [
+            "div.scale-panels.aem-GridColumn",
+            "section.mrvll-scale-panels"
+          ],
+          "style": "light",
+          "blocks": [],
+          "defaultContent": [
+            ".mrvll-scale-panels .mrvll-section-intro",
+            ".mrvll-scale-panels__panels img"
+          ]
+        },
+        {
+          "id": "3",
+          "name": "Distance explorer",
+          "selector": [
+            "div.distance-explorer.aem-GridColumn",
+            "section.mrvll-distance-explorer"
+          ],
+          "style": "dark",
+          "blocks": [
+            "tabs-distance"
+          ],
+          "defaultContent": [
+            ".mrvll-distance-explorer__footer"
+          ]
+        },
+        {
+          "id": "4",
+          "name": "Portfolio tabs",
+          "selector": [
+            "div.portfolio.aem-GridColumn",
+            "section.mrvll-portfolio"
+          ],
+          "style": "dark",
+          "blocks": [
+            "tabs-portfolio"
+          ],
+          "defaultContent": [
+            ".mrvll-portfolio__intro"
+          ]
+        },
+        {
+          "id": "5",
+          "name": "AI revolution stats",
+          "selector": [
+            "div.stats.aem-GridColumn",
+            "section.mrvll-stats"
+          ],
+          "style": "light-grey",
+          "blocks": [
+            "cards-stats"
+          ],
+          "defaultContent": [
+            ".mrvll-stats__inner > div:first-child"
+          ]
+        },
+        {
+          "id": "6",
+          "name": "News and insights",
+          "selector": [
+            "div.news.aem-GridColumn",
+            "section.mrvll-news"
+          ],
+          "style": "light-grey",
+          "blocks": [
+            "tabs-news"
+          ],
+          "defaultContent": [
+            ".mrvll-news__intro",
+            ".mrvll-news__cta"
+          ]
+        }
+      ]
+    }
+  ]
+}

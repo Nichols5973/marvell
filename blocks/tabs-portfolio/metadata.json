@@ -1,0 +1,22 @@
+{
+  "variantName": "tabs-portfolio",
+  "baseBlock": "tabs",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "description": "5 labelled switchable panels (h3, paragraph, CTA, large image)",
+    "sectionStyle": "dark",
+    "section": "Portfolio tabs"
+  },
+  "contentPattern": "One row per tab: [tab label e.g. 'Interconnect' | h3, paragraph, CTA link, image]",
+  "usage": {
+    "pagesUsing": [
+      "https://www.marvell.com/"
+    ],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-05T15:55:31.408Z"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "tabs-portfolio"
+  ]
+}

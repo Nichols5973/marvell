@@ -1,0 +1,22 @@
+{
+  "variantName": "cards-stats",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "description": "5 tiles with gradient bg image, icon, statement text",
+    "sectionStyle": "light-grey",
+    "section": "AI revolution stats"
+  },
+  "contentPattern": "One row per card: [icon image | statement paragraph]. Tile gradient backgrounds are decorative (CSS).",
+  "usage": {
+    "pagesUsing": [
+      "https://www.marvell.com/"
+    ],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-05T15:56:40.724Z"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "cards-stats"
+  ]
+}

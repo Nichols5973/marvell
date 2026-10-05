@@ -1,0 +1,22 @@
+{
+  "variantName": "tabs-distance",
+  "baseBlock": "tabs",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "description": "Slider with 6 labelled distance stops, each switching an image + headline/title/description panel",
+    "sectionStyle": "dark",
+    "section": "Distance explorer"
+  },
+  "contentPattern": "One row per stop: [label e.g. 1000km | image + rich text]. Stop 1 carries headline paragraph \"1,000+ kilometers\", h3 title and description paragraph; the other stops carry only image + h3 title.",
+  "usage": {
+    "pagesUsing": [
+      "https://www.marvell.com/"
+    ],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-05T15:53:55.150Z"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "tabs-distance"
+  ]
+}

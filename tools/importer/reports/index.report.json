@@ -1,0 +1,20 @@
+{
+  "status": "success",
+  "url": "https://www.marvell.com/",
+  "path": "index",
+  "timestamp": "2026-10-05T19:41:04.899Z",
+  "title": "Marvell Technology, Inc. | Essential technology, done right",
+  "template": "home",
+  "blocks": [
+    "hero-dark",
+    "carousel-teaser",
+    "tabs-distance",
+    "tabs-portfolio",
+    "cards-stats",
+    "cards-stats",
+    "cards-stats",
+    "cards-stats",
+    "cards-stats",
+    "tabs-news"
+  ]
+}

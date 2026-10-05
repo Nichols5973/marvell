@@ -1,0 +1,177 @@
+/*
+ * cards-stats: Marvell "AI revolution" stats tiles (source: section.mrvll-stats).
+ * Values from source computed styles. Desktop layout is a 3-column grid where the section
+ * intro (default content) occupies the first cell and the 5 tiles fill the rest.
+ */
+
+/* section intro (default content before the block) - mobile */
+main > .section.cards-stats-container > .default-content-wrapper {
+  margin-bottom: 28px; /* intro margin-bottom 16px + layout gap 12px */
+}
+
+main > .section.cards-stats-container > .default-content-wrapper > h2 {
+  margin-top: 14px;
+}
+
+main > .section.cards-stats-container > .default-content-wrapper > h2 + p {
+  margin-top: 18px;
+}
+
+/* tiles - mobile */
+.cards-stats > ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cards-stats .cards-stats-card {
+  --cards-stats-tile-bg:
+    radial-gradient(ellipse 60% 70% at 0% 100%, rgb(15 80 132 / 60%), transparent),
+    linear-gradient(90deg, rgb(2 52 108) 0%, rgb(12 79 131) 40%, rgb(22 97 146) 75%, rgb(18 93 144) 100%);
+
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
+  gap: 12px 16px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 20px 14px 24px;
+  overflow: hidden;
+  border: 1px solid #c8c9c7;
+  background-color: rgb(4 58 114);
+  background-image: var(--cards-stats-tile-bg);
+  color: var(--text-inverse-color);
+}
+
+/* tile gradients approximate the source background images (stats-tn-02/01/04/05)
+   with their 40% black overlay applied; source order repeats 02, 01, 04, 05, 02 */
+.cards-stats .cards-stats-card:nth-child(4n + 2) {
+  --cards-stats-tile-bg:
+    radial-gradient(ellipse 55% 75% at 0% 65%, rgb(50 108 147), transparent),
+    radial-gradient(ellipse 45% 50% at 100% 0%, rgb(8 80 134 / 80%), transparent),
+    radial-gradient(ellipse 45% 50% at 100% 100%, rgb(14 76 128 / 80%), transparent),
+    linear-gradient(rgb(4 58 114), rgb(4 58 114));
+}
+
+.cards-stats .cards-stats-card:nth-child(4n + 3) {
+  --cards-stats-tile-bg:
+    radial-gradient(ellipse 65% 75% at 100% 100%, rgb(52 114 148), transparent),
+    radial-gradient(ellipse 45% 50% at 0% 0%, rgb(26 91 141), transparent),
+    radial-gradient(ellipse 50% 50% at 0% 100%, rgb(2 52 108), transparent),
+    linear-gradient(rgb(4 64 122), rgb(4 64 122));
+}
+
+.cards-stats .cards-stats-card:nth-child(4n + 4) {
+  --cards-stats-tile-bg:
+    radial-gradient(ellipse 45% 50% at 58% 55%, rgb(42 104 146), transparent),
+    radial-gradient(ellipse 55% 55% at 100% 100%, rgb(4 62 119), transparent),
+    radial-gradient(ellipse 55% 50% at 100% 0%, rgb(14 66 118), transparent),
+    linear-gradient(rgb(6 82 138), rgb(6 82 138));
+}
+
+.cards-stats .cards-stats-icon {
+  grid-area: 1 / 2;
+  place-self: start end;
+  width: 40px;
+  height: 40px;
+}
+
+.cards-stats .cards-stats-icon picture,
+.cards-stats .cards-stats-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cards-stats .cards-stats-icon img {
+  object-fit: contain;
+}
+
+.cards-stats .cards-stats-body {
+  grid-area: 1 / 1;
+  font-size: calc(9.3333px + 1rem);
+  line-height: 33.3333px;
+}
+
+.cards-stats .cards-stats-body > * {
+  margin: 0;
+  color: inherit;
+  font: inherit;
+}
+
+@media (width >= 1024px) {
+  /* stack intro + block in one grid area so the intro sits in the first tile cell */
+  main > .section.cards-stats-container:has(> .default-content-wrapper + .cards-stats-wrapper) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  main > .section.cards-stats-container:has(> .default-content-wrapper + .cards-stats-wrapper) > div {
+    grid-area: 1 / 1;
+    align-self: start;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  main > .section.cards-stats-container > .default-content-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: start;
+    column-gap: 30px;
+    margin-bottom: 0;
+    padding-top: 25px;
+  }
+
+  main > .section.cards-stats-container > .default-content-wrapper > * {
+    grid-column: 1;
+  }
+
+  main > .section.cards-stats-container > .default-content-wrapper > h2 {
+    margin-top: 11px;
+  }
+
+  main > .section.cards-stats-container > .default-content-wrapper > h2 + p {
+    margin-top: 20px;
+  }
+
+  .cards-stats > ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px 30px;
+  }
+
+  main > .section.cards-stats-container > .default-content-wrapper + .cards-stats-wrapper .cards-stats > ul > li:first-child {
+    grid-column-start: 2;
+  }
+
+  .cards-stats .cards-stats-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 293px;
+    padding: 36px 41px 32px;
+  }
+
+  .cards-stats .cards-stats-icon {
+    align-self: flex-start;
+    width: 55px;
+    height: 55px;
+  }
+
+  .cards-stats .cards-stats-body {
+    margin-top: 25px;
+    font-size: calc(9.3333px + 1.1875rem);
+    line-height: 37.3333px;
+  }
+
+  /* the block overlays the intro's grid area: let the intro stay selectable/clickable */
+  main > .section.cards-stats-container > .default-content-wrapper + .cards-stats-wrapper {
+    pointer-events: none;
+  }
+
+  main > .section.cards-stats-container > .default-content-wrapper + .cards-stats-wrapper .cards-stats-card {
+    pointer-events: auto;
+  }
+}

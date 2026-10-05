@@ -176,7 +176,13 @@
       	"title",
       	"video",
         "form",
-        "embed-adaptive-form"
+        "embed-adaptive-form",
+        "hero-dark",
+        "carousel-teaser",
+        "tabs-distance",
+        "tabs-portfolio",
+        "cards-stats",
+        "tabs-news"
       ]
     }
   ]

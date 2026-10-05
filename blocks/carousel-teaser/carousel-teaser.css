@@ -1,0 +1,331 @@
+/*
+ * carousel-teaser: compact white story card that sits under the hero on mobile and
+ * overlaps the bottom-right edge of the hero on desktop (values from marvell.com
+ * .mrvll-hero-teaser computed styles).
+ */
+
+/* wrapper: the hero section removes wrapper max-width/padding, so restore the source
+   gutter here (source: 60px between 801px and 1470px, flush right above that) */
+main > .section.carousel-teaser-container > .carousel-teaser-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+/* card */
+.carousel-teaser {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-height: 162px;
+  overflow: hidden;
+  border: 1px solid #d9d9d6;
+  border-radius: 2px 0 0 2px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--brand-font-family);
+  backdrop-filter: blur(22px);
+}
+
+/* slides track */
+.carousel-teaser .carousel-teaser-slides {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.carousel-teaser .carousel-teaser-slide {
+  display: none;
+  flex: 1 1 auto;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  min-height: 162px;
+}
+
+.carousel-teaser .carousel-teaser-slide.active {
+  display: flex;
+}
+
+/* linked slide: stretch the title link over the whole card */
+.carousel-teaser .carousel-teaser-slide.has-link {
+  position: relative;
+}
+
+.carousel-teaser .carousel-teaser-slide.has-link .carousel-teaser-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* media (hidden on mobile, as on the source) */
+.carousel-teaser .carousel-teaser-image {
+  display: none;
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background-color: rgb(11 18 32);
+}
+
+.carousel-teaser .carousel-teaser-image picture,
+.carousel-teaser .carousel-teaser-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* body */
+.carousel-teaser .carousel-teaser-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  padding: 22px 18px;
+}
+
+.carousel-teaser .carousel-teaser-slide .carousel-teaser-body > * {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.carousel-teaser .carousel-teaser-slide .carousel-teaser-body .carousel-teaser-eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+}
+
+.carousel-teaser .carousel-teaser-slide .carousel-teaser-body h3 {
+  margin-top: 30px;
+  font-family: var(--brand-font-family);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 31px;
+}
+
+/* mobile: inline "next" arrow after the title (icon-nav-arrow-right, 11x14) */
+.carousel-teaser .carousel-teaser-slide .carousel-teaser-body h3::after {
+  content: '';
+  display: inline-block;
+  width: 11px;
+  height: 14px;
+  margin-left: 10px;
+  background: url('./icon-nav-arrow-right.svg') no-repeat center / 11px 14px;
+}
+
+.carousel-teaser .carousel-teaser-slide .carousel-teaser-body h3 a:any-link,
+.carousel-teaser .carousel-teaser-slide .carousel-teaser-body h3 a:hover,
+.carousel-teaser .carousel-teaser-slide .carousel-teaser-body h3 a:focus {
+  color: inherit;
+  text-decoration: none;
+}
+
+.carousel-teaser .carousel-teaser-slide .carousel-teaser-body h3 a:focus-visible {
+  outline: 2px solid var(--brand-color);
+  outline-offset: 2px;
+}
+
+/* prev/next column (desktop only) */
+.carousel-teaser .carousel-teaser-nav {
+  display: none;
+}
+
+.carousel-teaser .carousel-teaser-nav button {
+  display: flex;
+  flex: 1 1 50%;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--background-color);
+  cursor: pointer;
+  transition: background-color 220ms var(--button-ease);
+}
+
+.carousel-teaser .carousel-teaser-nav button + button {
+  border-top: 1px solid #d9d9d6;
+}
+
+.carousel-teaser .carousel-teaser-nav button:hover,
+.carousel-teaser .carousel-teaser-nav button:focus {
+  background-color: rgb(0 114 206 / 10%);
+}
+
+.carousel-teaser .carousel-teaser-nav button::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 14px;
+  background: url('./icon-chevron.svg') no-repeat center / 8px 14px;
+  transition: transform 280ms var(--button-ease);
+}
+
+.carousel-teaser .carousel-teaser-nav .carousel-teaser-next::before {
+  transform: scaleX(-1);
+}
+
+.carousel-teaser .carousel-teaser-nav .carousel-teaser-prev:hover::before,
+.carousel-teaser .carousel-teaser-nav .carousel-teaser-prev:focus::before {
+  transform: translateX(-3px);
+}
+
+.carousel-teaser .carousel-teaser-nav .carousel-teaser-next:hover::before,
+.carousel-teaser .carousel-teaser-nav .carousel-teaser-next:focus::before {
+  transform: scaleX(-1) translateX(-3px);
+}
+
+/* dots (mobile only), top-right of the card */
+.carousel-teaser .carousel-teaser-dots {
+  position: absolute;
+  top: 22px;
+  right: 21px;
+  z-index: 2;
+  display: flex;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+}
+
+.carousel-teaser .carousel-teaser-dots .carousel-teaser-dot {
+  display: block;
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  padding: 5px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.carousel-teaser .carousel-teaser-dots .carousel-teaser-dot::before {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #d9d9d6;
+}
+
+.carousel-teaser .carousel-teaser-dots .carousel-teaser-dot[aria-current='true']::before {
+  background-color: var(--brand-color);
+}
+
+/* slide change: thumbnail cross-fade/zoom and text lift, as on the source */
+@keyframes carousel-teaser-thumb-in {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes carousel-teaser-body-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.carousel-teaser .carousel-teaser-slide.active .carousel-teaser-image picture {
+  animation: carousel-teaser-thumb-in 780ms var(--button-ease) both;
+}
+
+.carousel-teaser .carousel-teaser-slide.active .carousel-teaser-body {
+  animation: carousel-teaser-body-in 480ms var(--button-ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-teaser .carousel-teaser-slide.active .carousel-teaser-image picture,
+  .carousel-teaser .carousel-teaser-slide.active .carousel-teaser-body {
+    animation: none;
+  }
+
+  .carousel-teaser .carousel-teaser-nav button,
+  .carousel-teaser .carousel-teaser-nav button::before {
+    transition: none;
+  }
+}
+
+@media (width >= 801px) and (width <= 1470px) {
+  main > .section.carousel-teaser-container > .carousel-teaser-wrapper {
+    padding: 0 60px;
+  }
+}
+
+/* desktop (source breakpoint): card overlaps the bottom edge of the hero */
+@media (width >= 1025px), (width >= 801px) and (orientation: landscape) {
+  main > .section.carousel-teaser-container > .carousel-teaser-wrapper {
+    height: 0;
+    overflow: visible;
+  }
+
+  .carousel-teaser {
+    top: -137px;
+    width: 617px;
+    max-width: 100%;
+    min-height: 168px;
+    margin-left: auto;
+  }
+
+  .carousel-teaser .carousel-teaser-slide {
+    min-height: 168px;
+  }
+
+  .carousel-teaser .carousel-teaser-image {
+    display: block;
+    width: 195px;
+    height: 156px;
+    margin: 6px;
+  }
+
+  .carousel-teaser .carousel-teaser-body {
+    justify-content: center;
+    padding: 0 0 0 20px;
+  }
+
+  .carousel-teaser .carousel-teaser-slide .carousel-teaser-body .carousel-teaser-eyebrow {
+    font-size: 15px;
+    letter-spacing: 3px;
+  }
+
+  .carousel-teaser .carousel-teaser-slide .carousel-teaser-body h3 {
+    margin-top: 41px;
+    font-size: 25px;
+    line-height: 32px;
+  }
+
+  .carousel-teaser .carousel-teaser-slide .carousel-teaser-body h3::after {
+    content: none;
+  }
+
+  .carousel-teaser .carousel-teaser-nav {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    width: 93px;
+    border-left: 1px solid #d9d9d6;
+  }
+
+  .carousel-teaser .carousel-teaser-dots {
+    display: none;
+  }
+}
