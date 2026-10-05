@@ -1,10 +1,9 @@
 # Marvell content package
 
-`marvell-content-1.1.zip` is an AEM content package for the Marvell site (`/content/marvell`).
+1. `marvell-images.zip` — all 49 page images. Unzip it and upload the `images` folder
+   into AEM Assets → Files → marvell (so they live at `/content/dam/marvell/images/...`).
+2. `marvell-content-1.2.zip` — AEM content package with `/content/marvell/index` (homepage),
+   `/content/marvell/nav` and `/content/marvell/footer`. Install via Tools → Deployment → Packages.
 
-It installs:
-- `/content/marvell/index` (homepage), `/content/marvell/nav`, `/content/marvell/footer`
-- all page images (45) under `/content/dam/marvell/images` — marvell.com blocks hotlinking, so nothing is linked from there except the footer video
-
-Install via AEM author → Tools → Deployment → Packages → Upload Package → Install.
-Installing replaces any existing index/nav/footer pages created by the site template.
+Images are uploaded through Assets (not inside the package) so AEM processes them properly.
+The footer background video is still linked from marvell.com.
