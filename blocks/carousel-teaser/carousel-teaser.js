@@ -85,7 +85,17 @@ export default function decorate(block) {
         (picture.closest('p') || picture).remove();
         imageWrap.append(optimized);
       }
-      if (cell.textContent.trim()) body.append(...cell.childNodes);
+      if (!cell.textContent.trim()) return;
+      // In Universal Editor the richtext field arrives wrapped in an instrumented <div>;
+      // unwrap it so eyebrow/title stay direct children of the body (styling relies on it).
+      const wrapper = cell.children.length === 1 && cell.firstElementChild.tagName === 'DIV'
+        ? cell.firstElementChild : null;
+      if (wrapper) {
+        moveInstrumentation(wrapper, body);
+        body.append(...wrapper.childNodes);
+      } else {
+        body.append(...cell.childNodes);
+      }
     });
 
     // First paragraph before the heading is the eyebrow.
